@@ -22,7 +22,7 @@ const SignUp = () => {
     event.preventDefault();
 
     try {
-      await axiosInstance.post('/users', signupRequest);
+      await axiosInstance.post('/v1/users', signupRequest);
 
       console.log('Signup successful!');
       navigate('/itsmine/login');

@@ -18,7 +18,7 @@ const SignIn = ({onLogin}) => {
     event.preventDefault();
 
     try {
-      const response = await axiosInstance.post('/users/login', loginRequest);
+      const response = await axiosInstance.post('/v1/users/login', loginRequest);
 
       // 응답 바디에서 토큰 추출
       const token = response.data.data;
