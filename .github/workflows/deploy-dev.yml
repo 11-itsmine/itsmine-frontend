@@ -72,4 +72,4 @@ jobs:
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
             docker stop frontend-app || true
             docker rm frontend-app || true
-            docker run -d --name frontend-app -p 3000:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
+            docker run -d --name frontend-app -p 80:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
