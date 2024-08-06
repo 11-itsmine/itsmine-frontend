@@ -1,17 +1,13 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import axiosInstance from '../../api/axiosInstance'; // Ensure this path is correct
+import axiosInstance from '../../api/axiosInstance'; // 경로 수정
 import styled from 'styled-components';
 import Link from '@mui/material/Link';
 
-const SignUp = () => {
-  const [signupRequest, setSignupRequest] = useState({
-    name: '',
+const SignIn = ({onLogin}) => {
+  const [loginRequest, setLoginRequest] = useState({
     username: '',
-    email: '',
-    password: '',
-    address: '',
-    nickname: '',
+    password: ''
   });
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,108 +18,82 @@ const SignUp = () => {
     event.preventDefault();
 
     try {
-      await axiosInstance.post('/users', signupRequest);
+      const response = await axiosInstance.post('/users/login', loginRequest);
 
-      console.log('Signup successful!');
-      navigate('/itsmine/login');
+      // 응답 바디에서 토큰 추출
+      const token = response.data.data;
+      console.log('Login successful!', token);
+
+      // 토큰을 localStorage에 저장
+      localStorage.setItem('Authorization', token);
+      console.log('Token stored in localStorage:',
+          localStorage.getItem('Authorization'));
+
+      // 부모 컴포넌트에 로그인 상태 변경 알리기
+      onLogin();
+
+      // 페이지를 리다이렉트하거나 상태를 업데이트할 수 있습니다.
+      navigate('/itsmine');
     } catch (error) {
-      console.error('Signup failed:', error);
+      // 로그인 실패 시 처리 로직
+      console.error('Login failed:', error);
       if (error.response && error.response.data) {
         setErrorMessage(error.response.data.message);
       } else {
-        setErrorMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+        setErrorMessage('로그인에 실패했습니다. 다시 시도해주세요.');
       }
     }
   };
 
   const handleChange = (e) => {
     const {name, value} = e.target;
-    setSignupRequest({...signupRequest, [name]: value});
+    setLoginRequest({...loginRequest, [name]: value});
   };
 
   return (
       <Container>
         <Logo>ItsMine</Logo>
         <Form onSubmit={handleSubmit}>
-          <SignUpForm>
-            <Label htmlFor="name">Name</Label>
-            <Input
-                id="name"
-                name="name"
-                placeholder="Enter your name"
-                value={signupRequest.name}
-                onChange={handleChange}
-                autoComplete="name"
-                autoFocus
-            />
-          </SignUpForm>
-          <SignUpForm>
+          <LoginForm>
             <Label htmlFor="username">Username</Label>
             <Input
                 id="username"
                 name="username"
                 placeholder="Enter your username"
-                value={signupRequest.username}
+                value={loginRequest.username}
                 onChange={handleChange}
                 autoComplete="username"
+                autoFocus
             />
-          </SignUpForm>
-          <SignUpForm>
-            <Label htmlFor="email">Email Address</Label>
-            <Input
-                id="email"
-                name="email"
-                placeholder="Enter your email"
-                value={signupRequest.email}
-                onChange={handleChange}
-                autoComplete="email"
-            />
-          </SignUpForm>
-          <SignUpForm>
+          </LoginForm>
+          <LoginForm>
             <Label htmlFor="password">Password</Label>
             <Input
                 id="password"
                 name="password"
                 type="password"
                 placeholder="Enter your password"
-                value={signupRequest.password}
+                value={loginRequest.password}
                 onChange={handleChange}
-                autoComplete="new-password"
+                autoComplete="current-password"
             />
-          </SignUpForm>
-          <SignUpForm>
-            <Label htmlFor="address">Address</Label>
-            <Input
-                id="address"
-                name="address"
-                placeholder="Enter your address"
-                value={signupRequest.address}
-                onChange={handleChange}
-                autoComplete="address"
-            />
-          </SignUpForm>
-          <SignUpForm>
-            <Label htmlFor="nickname">Nickname</Label>
-            <Input
-                id="nickname"
-                name="nickname"
-                placeholder="Enter your nickname"
-                value={signupRequest.nickname}
-                onChange={handleChange}
-                autoComplete="nickname"
-            />
-          </SignUpForm>
+          </LoginForm>
           <FormControlLabel>
-            <Checkbox type="checkbox" value="allowExtraEmails" color="primary"/>
-            I want to receive inspiration, marketing promotions and updates via
-            email.
+            <Checkbox
+                type="checkbox"
+                value="remember"
+                color="primary"
+            />
+            Remember me
           </FormControlLabel>
           {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-          <SignUpBtn type="submit">Sign Up</SignUpBtn>
+          <LoginBtn type="submit">Log In</LoginBtn>
           <GridContainer>
             <GridItem>
-              <Link href="/itsmine/login">Already have an account? Sign
-                in</Link>
+              <Link href="#">Forgot password?</Link>
+            </GridItem>
+            <GridItem>
+              <Link href="/signup">Don't have an account? Sign Up</Link>
             </GridItem>
           </GridContainer>
         </Form>
@@ -149,7 +119,7 @@ const Form = styled.form`
   width: 100%;
 `;
 
-const SignUpForm = styled.div`
+const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: ${props => props.theme.margins.xxl};
@@ -198,7 +168,7 @@ const ErrorText = styled.p`
   font-size: ${props => props.theme.fontSizes.small};
 `;
 
-const SignUpBtn = styled.button`
+const LoginBtn = styled.button`
   background: #ebebeb;
   width: 100%;
   margin: ${props => props.theme.margins.xl};
@@ -220,4 +190,4 @@ const GridItem = styled.div`
   font-size: ${props => props.theme.fontSizes.small};
 `;
 
-export default SignUp;
+export default SignIn;
