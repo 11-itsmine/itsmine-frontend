@@ -50,7 +50,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axiosInstance.get('/users/profile');
+        const response = await axiosInstance.get('/v1/users/profile');
         const userData = response.data.data;
         setProfile(userData);
 
@@ -75,7 +75,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axiosInstance.get('/products/user', {
+        const response = await axiosInstance.get('/v1/products/user', {
           params: {
             page,
             size,
@@ -97,7 +97,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchLikedProducts = async () => {
       try {
-        const response = await axiosInstance.get('/products/likes', {
+        const response = await axiosInstance.get('/v1/products/likes', {
           params: {
             page,
             size,
@@ -119,7 +119,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await axiosInstance.get('/auctions', {
+        const response = await axiosInstance.get('/v1/auctions', {
           params: {
             page,
             size,
@@ -155,7 +155,7 @@ const Profile = () => {
     formData.append('file', file);
 
     try {
-      const response = await axiosInstance.post('/s3/upload/profile', formData, {
+      const response = await axiosInstance.post('/v1/s3/upload/profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

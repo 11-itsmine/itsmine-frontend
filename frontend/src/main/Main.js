@@ -11,7 +11,7 @@ function Main() {
 
   useEffect(() => {
     // Board에 필요한 데이터 가져오기
-    axiosInstance.get('/chatrooms')
+    axiosInstance.get('/v1/chatrooms')
     .then(response => {
       setChatRooms(response.data);
     })
