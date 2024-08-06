@@ -22,7 +22,7 @@ const ChatWindow = ({ room, onClose }) => {
     // 초기 메시지 로드
     const fetchMessages = async () => {
       try {
-        const response = await axiosInstance.get(`/chatrooms/${roomId}`);
+        const response = await axiosInstance.get(`/v1/chatrooms/${roomId}`);
         setMessages(response.data.data || []);
       } catch (error) {
         console.error('Failed to fetch messages:', error);
@@ -103,7 +103,7 @@ const ChatWindow = ({ room, onClose }) => {
   // 채팅방 나가기 및 페이지 새로고침 함수
   const handleLeaveAndRefresh = async () => {
     try {
-      await axiosInstance.delete(`/chatrooms/${roomId}`);
+      await axiosInstance.delete(`/v1/chatrooms/${roomId}`);
       console.log('Successfully left the chat room.');
     } catch (error) {
       console.error('Failed to leave the chat room:', error);

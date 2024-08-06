@@ -21,7 +21,7 @@ const Item = ({
   // 제품 정보를 가져오는 함수
   const fetchProduct = async () => {
     try {
-      const response = await axiosInstance.get(`/products/${productId}`);
+      const response = await axiosInstance.get(`/v1/products/${productId}`);
       const productData = response.data.data;
       setProduct(productData);
 
@@ -47,7 +47,7 @@ const Item = ({
   }, [productId]);
 
   const goToDetail = () => {
-    navigate(`/products/${productId}`);
+    navigate(`/v1/products/${productId}`);
   };
 
   const nextImage = (e) => {

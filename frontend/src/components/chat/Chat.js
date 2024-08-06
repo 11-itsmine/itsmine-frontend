@@ -19,7 +19,7 @@ const Chat = () => {
         setLoading(true);
         setError(null);
 
-        const response = await axiosInstance.get('/chatrooms');
+        const response = await axiosInstance.get('/v1/chatrooms');
         console.log('방 목록 응답:', response);
 
         const { data } = response;

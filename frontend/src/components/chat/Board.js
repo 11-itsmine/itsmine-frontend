@@ -20,7 +20,7 @@ const Board = ({ currentUserId }) => {
       setLoading(true);
       setError(null);
 
-      const response = await axiosInstance.get('/chatrooms');
+      const response = await axiosInstance.get('/v1/chatrooms');
       const { data } = response;
 
       if (data && Array.isArray(data.data)) {

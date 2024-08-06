@@ -30,7 +30,7 @@ const ProductCreatePage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get('/categories');
+        const response = await axiosInstance.get('/v1/categories');
         setCategories(response.data.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -54,7 +54,7 @@ const ProductCreatePage = () => {
 
     try {
       const response = await axiosInstance.post(
-          'http://localhost:8080/s3/upload',
+          'http://localhost:8080/v1/s3/upload',
           formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -93,7 +93,7 @@ const ProductCreatePage = () => {
         }
       };
 
-      await axiosInstance.post('http://localhost:8080/products', productData, {
+      await axiosInstance.post('http://localhost:8080/v1/products', productData, {
         headers: {
           Authorization: token
         }
