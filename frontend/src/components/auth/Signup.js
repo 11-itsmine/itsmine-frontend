@@ -22,10 +22,10 @@ const SignUp = () => {
     event.preventDefault();
 
     try {
-      await axiosInstance.post('/users', signupRequest);
+      await axiosInstance.post('/v1/users', signupRequest);
 
       console.log('Signup successful!');
-      navigate('/v1/itsmine/login');
+      navigate('/itsmine/login');
     } catch (error) {
       console.error('Signup failed:', error);
       if (error.response && error.response.data) {
