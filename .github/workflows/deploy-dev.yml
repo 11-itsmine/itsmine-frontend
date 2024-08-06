@@ -33,7 +33,7 @@ jobs:
 
       # React 애플리케이션을 빌드합니다.
       - name: Build React app
-        run: npm run build
+        run: CI=false npm run build
         working-directory: ./frontend
 
       # Docker 이미지를 빌드합니다.
