@@ -1,2 +1,2 @@
-# itsmien-frontend
+# itsmine-frontend
 itsmine frontend repository
