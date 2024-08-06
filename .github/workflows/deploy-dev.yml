@@ -38,7 +38,7 @@ jobs:
 
       # Docker 이미지를 빌드합니다.
       - name: Build Frontend Docker image
-        run: docker build -t frontend-app -f Dockerfile .
+        run: docker build -t itsmine-frontend .
 
       # Amazon ECR에 로그인합니다.
       - name: Log in to Amazon ECR
@@ -54,7 +54,7 @@ jobs:
         run: |
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           FRONTEND_IMAGE_TAG=${{ github.sha }}-frontend-$TIMESTAMP
-          docker tag frontend-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:$FRONTEND_IMAGE_TAG
+          docker tag itsmine-frontend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:$FRONTEND_IMAGE_TAG
           echo "FRONTEND_IMAGE_TAG=$FRONTEND_IMAGE_TAG" >> $GITHUB_ENV
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:$FRONTEND_IMAGE_TAG
 
@@ -70,6 +70,6 @@ jobs:
           script: |
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
-            docker stop frontend-app || true
-            docker rm frontend-app || true
-            docker run -d --name frontend-app -p 80:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
+            docker stop itsmine-frontend || true
+            docker rm itsmine-frontend || true
+            docker run -d --name itsmine-frontend -p 80:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
