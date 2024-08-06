@@ -68,6 +68,7 @@ jobs:
           port: 22
           script_stop: true
           script: |
+            sudo systemctl stop nginx
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
             docker stop itsmine-frontend || true
