@@ -58,7 +58,7 @@ const ItemList = () => {
 
       try {
         const response = await axiosInstance.get(
-            `/products/all?page=${page}&size=${limit}${categoryString}${priceString}&search=${userInput}&sort=${optionValue}`
+            `/v1/products/all?page=${page}&size=${limit}${categoryString}${priceString}&search=${userInput}&sort=${optionValue}`
         );
 
         if (!response.data.data.content) {
