@@ -54,9 +54,9 @@ jobs:
         run: |
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           FRONTEND_IMAGE_TAG=${{ github.sha }}-frontend-$TIMESTAMP
-          docker tag frontend-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend-repository:$FRONTEND_IMAGE_TAG
-          echo "::set-output name=FRONTEND_IMAGE_TAG::$FRONTEND_IMAGE_TAG"
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend-repository:$FRONTEND_IMAGE_TAG
+          docker tag frontend-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:$FRONTEND_IMAGE_TAG
+          echo "FRONTEND_IMAGE_TAG=$FRONTEND_IMAGE_TAG" >> $GITHUB_ENV
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:$FRONTEND_IMAGE_TAG
 
       # Amazon EC2 인스턴스에 SSH로 접속하여 Docker 컨테이너를 배포합니다.
       - name: SSH into EC2 and deploy Frontend Docker container
@@ -69,7 +69,7 @@ jobs:
           script_stop: true
           script: |
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend-repository:${{ steps.frontend_tag_image.outputs.FRONTEND_IMAGE_TAG }}
+            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
             docker stop frontend-app || true
             docker rm frontend-app || true
-            docker run -d --name frontend-app -p 3000:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend-repository:${{ steps.frontend_tag_image.outputs.FRONTEND_IMAGE_TAG }}
+            docker run -d --name frontend-app -p 3000:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/itsmine-repository:${{ env.FRONTEND_IMAGE_TAG }}
