@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance'; // 경로 수정
 import styled from 'styled-components';
 import Link from '@mui/material/Link';
+import { KAKAO_AUTH_URL } from "./LoginData";
+import kakaoLoginImage from "../auth/kakao_login_medium_wide.png"; // 이미지 파일 경로
 
-const SignIn = ({onLogin}) => {
+const SignIn = ({ onLogin }) => {
   const [loginRequest, setLoginRequest] = useState({
     username: '',
     password: ''
@@ -18,7 +20,8 @@ const SignIn = ({onLogin}) => {
     event.preventDefault();
 
     try {
-      const response = await axiosInstance.post('/v1/users/login', loginRequest);
+      const response = await axiosInstance.post('/v1/users/login',
+          loginRequest);
 
       // 응답 바디에서 토큰 추출
       const token = response.data.data;
@@ -46,8 +49,8 @@ const SignIn = ({onLogin}) => {
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setLoginRequest({...loginRequest, [name]: value});
+    const { name, value } = e.target;
+    setLoginRequest({ ...loginRequest, [name]: value });
   };
 
   return (
@@ -87,7 +90,12 @@ const SignIn = ({onLogin}) => {
             Remember me
           </FormControlLabel>
           {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+
           <LoginBtn type="submit">Log In</LoginBtn>
+          <KakaoBtn href={KAKAO_AUTH_URL}>
+            <KakaoLoginImage src={kakaoLoginImage} alt="Login with Kakao" />
+          </KakaoBtn>
+
           <GridContainer>
             <GridItem>
               <Link href="#">Forgot password?</Link>
@@ -171,13 +179,32 @@ const ErrorText = styled.p`
 const LoginBtn = styled.button`
   background: #ebebeb;
   width: 100%;
-  margin: ${props => props.theme.margins.xl};
+  margin-top: 0.8rem;
+  margin-bottom: 0.5rem;
   padding: ${props => props.theme.paddings.large};
   border: none;
   border-radius: 10px;
   font-size: ${props => props.theme.fontSizes.base};
   color: ${props => props.theme.colors.white};
   cursor: pointer;
+`;
+
+const KakaoBtn = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 3.375rem; // Login button height
+  margin-bottom: 1rem;
+  border: ${props => props.theme.borders.lightGray};
+  background: #ffe501;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 10px;
+`;
+
+const KakaoLoginImage = styled.img`
+  height: 100%;
 `;
 
 const GridContainer = styled.div`
@@ -187,6 +214,7 @@ const GridContainer = styled.div`
 `;
 
 const GridItem = styled.div`
+  margin-top: 2rem;
   font-size: ${props => props.theme.fontSizes.small};
 `;
 
