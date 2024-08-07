@@ -18,6 +18,6 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # 포트 3000 노출
-EXPOSE 3000
+EXPOSE 1234
 
 CMD ["nginx", "-g", "daemon off;"]
