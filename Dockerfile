@@ -17,7 +17,7 @@ FROM nginx:alpine
 # 빌드된 파일을 Nginx의 html 디렉토리로 복사
 COPY --from=build /app/build /usr/share/nginx/html
 
-# 포트 80 노출
-EXPOSE 80
+# 포트 3000 노출
+EXPOSE 3000
 
 CMD ["nginx", "-g", "daemon off;"]
