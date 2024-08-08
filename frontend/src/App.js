@@ -44,7 +44,8 @@ function App() {
                    element={<SignIn isLoggedIn={isLoggedIn}
                                     onLogin={handleLogin}/>}/>
             <Route path="/signup" element={<SignUp/>}/>
-            <Route path="/oauth/callback/kakao" element={<KakaoCallback/>} />
+            <Route path="/oauth/callback/kakao" element={<KakaoCallback isLoggedIn={isLoggedIn}
+                                                                        onLogin={handleLogin}/>}/>
             <Route path="/products" element={<CreateProduct/>}/>
             <Route path="/items" element={<ItemList/>}/>
             <Route path="/item" element={<Item/>}/>

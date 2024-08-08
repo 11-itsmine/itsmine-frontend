@@ -15,7 +15,7 @@ const KakaoCallback = ({ onLogin }) => {
 
   const handleKakaoLogin = async (code) => {
     try {
-      const response = await axiosInstance.post(`/v1/users/oauth/kakao?code=${code}`);
+      const response = await axiosInstance.get(`/v1/users/oauth/kakao?code=${code}`);
 
       // 응답 바디에서 토큰 추출
       const token = response.data.data;
@@ -30,7 +30,8 @@ const KakaoCallback = ({ onLogin }) => {
       onLogin();
 
       // 페이지를 리다이렉트하거나 상태를 업데이트할 수 있습니다.
-      navigate('/itsmine');
+      // 이때 뒤에 오는 토큰 값을 삭제 합니다.
+      navigate('/itsmine', { replace: true });
     } catch (error) {
       // 로그인 실패 시 처리 로직
       console.error('Kakao Login failed:', error);
