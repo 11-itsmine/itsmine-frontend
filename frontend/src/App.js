@@ -31,7 +31,7 @@ function App() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('Authorization'); // 토큰 삭제
+    localStorage.removeItem('Authorization');
   };
 
   return (
