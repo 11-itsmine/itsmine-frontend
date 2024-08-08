@@ -1,5 +1,5 @@
-export const REDIRECT_URI = 'http://localhost:3000/users/signin/kakao/callback';
+export const REDIRECT_URI = 'http://localhost:3000/oauth/callback/kakao';
 
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+export const REACT_APP_REST_API_KEY = '08a46b304d568ef454241721bcb6b981';
 
-export const KAKAO_TOKEN = 'https://kauth.kakao.com/oauth/token';
+export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REACT_APP_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;

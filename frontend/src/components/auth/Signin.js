@@ -4,7 +4,8 @@ import axiosInstance from '../../api/axiosInstance'; // 경로 수정
 import styled from 'styled-components';
 import Link from '@mui/material/Link';
 import { KAKAO_AUTH_URL } from "./LoginData";
-import kakaoLoginImage from "../auth/kakao_login_medium_wide.png"; // 이미지 파일 경로
+import kakaoLoginImage from "../auth/kakao_login_medium_wide.png";
+import axios from "axios"; // 이미지 파일 경로
 
 const SignIn = ({ onLogin }) => {
   const [loginRequest, setLoginRequest] = useState({
@@ -20,8 +21,7 @@ const SignIn = ({ onLogin }) => {
     event.preventDefault();
 
     try {
-      const response = await axiosInstance.post('/v1/users/login',
-          loginRequest);
+      const response = await axiosInstance.post('/v1/users/login', loginRequest);
 
       // 응답 바디에서 토큰 추출
       const token = response.data.data;
@@ -29,8 +29,7 @@ const SignIn = ({ onLogin }) => {
 
       // 토큰을 localStorage에 저장
       localStorage.setItem('Authorization', token);
-      console.log('Token stored in localStorage:',
-          localStorage.getItem('Authorization'));
+      console.log('Token stored in localStorage:', localStorage.getItem('Authorization'));
 
       // 부모 컴포넌트에 로그인 상태 변경 알리기
       onLogin();
@@ -46,6 +45,10 @@ const SignIn = ({ onLogin }) => {
         setErrorMessage('로그인에 실패했습니다. 다시 시도해주세요.');
       }
     }
+  };
+
+  const handleKakaoButtonClick = () => {
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   const handleChange = (e) => {
@@ -92,7 +95,7 @@ const SignIn = ({ onLogin }) => {
           {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
           <LoginBtn type="submit">Log In</LoginBtn>
-          <KakaoBtn href={KAKAO_AUTH_URL}>
+          <KakaoBtn onClick={handleKakaoButtonClick}>
             <KakaoLoginImage src={kakaoLoginImage} alt="Login with Kakao" />
           </KakaoBtn>
 
@@ -189,7 +192,7 @@ const LoginBtn = styled.button`
   cursor: pointer;
 `;
 
-const KakaoBtn = styled.a`
+const KakaoBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
