@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Link from '@mui/material/Link';
 import { KAKAO_AUTH_URL } from "./LoginData";
 import kakaoLoginImage from "../auth/kakao_login_medium_wide.png";
-import axios from "axios"; // 이미지 파일 경로
 
 const SignIn = ({ onLogin }) => {
   const [loginRequest, setLoginRequest] = useState({
